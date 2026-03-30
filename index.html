@@ -3,136 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>어신의 도구 - 낚시 서열 정리기</title>
+    <title>어신의 도구 AI - 초보자 가이드</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
         
         body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 20px; background: #0f172a; color: #fff; text-align: center; }
         .container { max-width: 500px; margin: 0 auto; }
-        h1 { color: #38bdf8; font-size: 28px; margin-bottom: 5px; letter-spacing: -1px; }
-        p.desc { font-size: 13px; opacity: 0.7; margin-bottom: 25px; }
-
-        /* 입력창 스타일 */
-        .input-card { background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 20px; border: 1px solid #334155; }
-        select, input { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; box-sizing: border-box; outline: none; }
-        select:focus, input:focus { border-color: #38bdf8; }
-
-        /* 버튼 스타일 */
-        .btn-calc { width: 100%; padding: 15px; background: #0ea5e9; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 900; cursor: pointer; transition: 0.2s; }
-        .btn-calc:active { transform: scale(0.98); background: #0284c7; }
-
-        /* 서열 카드 결과 (이게 핵심!) */
-        #result-card { display: none; margin-top: 25px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px 20px; border-radius: 20px; border: 3px solid #38bdf8; position: relative; overflow: hidden; }
-        #result-card.legend { border-color: #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
         
-        .rank-title { font-size: 14px; color: #38bdf8; margin-bottom: 10px; }
-        .rank-name { font-size: 42px; font-weight: 900; margin-bottom: 15px; text-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
-        .legend .rank-name { color: #fbbf24; text-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
-        
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; border-top: 1px solid #334155; padding-top: 20px; }
-        .stat-item span { display: block; font-size: 12px; opacity: 0.6; }
-        .stat-item b { font-size: 18px; color: #f8fafc; }
+        /* 💡 상단 가이드 영역 (핵심) */
+        .instruction-box { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #fee500; text-align: left; }
+        .step-txt { font-size: 14px; font-weight: 800; color: #fee500; margin-bottom: 5px; display: block; }
+        .desc-txt { font-size: 12px; line-height: 1.5; color: #cbd5e1; }
 
-        .rank-msg { font-size: 15px; line-height: 1.5; color: #94a3b8; }
-        .btn-save { margin-top: 20px; background: #22c55e; padding: 12px; border-radius: 8px; border: none; color: white; font-weight: bold; width: 100%; cursor: pointer; }
+        #canvas-wrap { 
+            width: 100%; height: 320px; background: #000; 
+            border-radius: 15px; margin-bottom: 15px; border: 2px solid #334155;
+            position: relative; overflow: hidden; touch-action: none;
+        }
+        canvas { width: 100%; height: 100%; object-fit: contain; }
+        
+        /* 💡 하단 실시간 안내바 */
+        #guide-msg { 
+            position: absolute; bottom: 0; width: 100%; background: #0ea5e9; 
+            color: #fff; font-size: 13px; padding: 12px; box-sizing: border-box; font-weight: 900; 
+        }
+
+        /* 입력 UI */
+        .ui-box { background: #1e293b; padding: 15px; border-radius: 15px; border: 1px solid #334155; margin-bottom: 20px; }
+        .row { display: flex; gap: 8px; margin-bottom: 8px; }
+        select, input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 15px; outline: none; }
+        
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 16px; }
+        .btn-up { background: #fee500; color: #3c1e1e; margin-bottom: 10px; }
+        .btn-calc { background: #0ea5e9; color: white; }
+        .btn-reset { background: #444; color: #ccc; margin-top: 10px; font-size: 12px; padding: 10px; }
+
+        /* 결과 카드 */
+        #result-card { 
+            display: none; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+            padding: 30px 20px; border-radius: 20px; border: 4px solid #38bdf8; margin-top: 20px;
+        }
+        .rank-name { font-size: 40px; font-weight: 900; margin: 10px 0; color: #38bdf8; }
+        .info-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #334155; padding-top: 15px; }
+
+        #file-input { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>어신의 도구 ⚖️</h1>
-    <p class="desc">잡으신 고기, 전국에서 몇 등인지 서열 정리해 드립니다.</p>
+    <h2 style="color: #38bdf8; margin-bottom: 5px;">어신의 도구 AI ⚖️</h2>
+    
+    <div class="instruction-box" id="step-info">
+        <span class="step-txt">📢 사용 순서</span>
+        <div class="desc-txt">
+            1. [대물 사진 불러오기] 클릭 (옆에 신용카드 필수!)<br>
+            2. 사진 위 <b>신용카드 양쪽 끝</b>을 콕! 콕! 찍기<br>
+            3. 물고기 <b>입술과 꼬리 끝</b>을 콕! 콕! 찍기
+        </div>
+    </div>
 
-    <div class="input-card">
-        <select id="fishType">
-            <option value="광어">광어 (Flatfish)</option>
-            <option value="우럭">우럭 (Rockfish)</option>
-            <option value="참돔">참돔 (Red Sea Bream)</option>
-            <option value="감성돔">감성돔 (Black Sea Bream)</option>
-            <option value="농어">농어 (Sea Bass)</option>
-            <option value="쭈꾸미">쭈꾸미 (Webfoot Octopus)</option>
-        </select>
-        <input type="number" id="fishSize" placeholder="크기 입력 (cm)" step="0.1">
-        <input type="text" id="fisherName" placeholder="조사님 성함 (예: 찬둥)">
-        <button class="btn-calc" onclick="calculateRank()">서열 확인하기</button>
+    <input type="file" id="file-input" accept="image/*">
+    <button class="btn btn-up" onclick="document.getElementById('file-input').click()">📸 1. 대물 사진 불러오기</button>
+    
+    <div id="canvas-wrap">
+        <canvas id="mainCanvas"></canvas>
+        <div id="guide-msg">사진을 먼저 불러와주세요!</div>
+    </div>
+
+    <div class="ui-box">
+        <div class="row">
+            <select id="fishType">
+                <option value="광어">광어</option><option value="우럭">우럭</option>
+                <option value="참돔">참돔</option><option value="농어">농어</option>
+                <option value="감성돔">감성돔</option><option value="벵에돔">벵에돔</option>
+            </select>
+            <input type="text" id="fisherName" placeholder="조사님 성함">
+        </div>
+        <div class="row">
+            <input type="text" id="measuredSize" placeholder="자동 측정 결과 (cm)" readonly style="color: #0ea5e9; font-weight: 900;">
+            <button class="btn btn-calc" onclick="showRank()">🏆 서열 인증</button>
+        </div>
+        <button class="btn btn-reset" onclick="resetAll()">처음부터 다시 찍기</button>
     </div>
 
     <div id="result-card">
-        <div class="rank-title">전국 낚시 서열 인증</div>
+        <div style="font-size: 12px; color: #38bdf8; font-weight: bold;">전국 낚시 서열 인증서</div>
         <div id="display-rank" class="rank-name">도시 어부</div>
-        
-        <div class="stat-grid">
-            <div class="stat-item">
-                <span>어종 / 크기</span>
-                <b id="res-info">광어 / 45cm</b>
-            </div>
-            <div class="stat-item">
-                <span>상위 %</span>
-                <b id="res-percent">상위 15%</b>
-            </div>
+        <div class="info-bar">
+            <div><span style="display:block; font-size:11px; opacity:0.6;">어종/크기</span><b id="res-info">-</b></div>
+            <div><span style="display:block; font-size:11px; opacity:0.6;">서열 비율</span><b id="res-percent">-</b></div>
         </div>
-
-        <p id="res-msg" class="rank-msg">"오~ 동네 방구 좀 뀌시겠는데요?"</p>
-        
-        <button class="btn-save" onclick="location.reload()">다시 측정하기</button>
-        <p style="font-size: 10px; margin-top: 15px; opacity: 0.4;">© 어신의 도구 - 찬둥의 작업실</p>
+        <p id="res-msg" style="font-size:14px; color:#94a3b8; margin-top:15px; line-height:1.5;"></p>
     </div>
 </div>
 
 <script>
-    function calculateRank() {
-        const type = document.getElementById('fishType').value;
-        const size = parseFloat(document.getElementById('fishSize').value);
-        const name = document.getElementById('fisherName').value || "무명조사";
-        const resultCard = document.getElementById('result-card');
+    const FISH_DATA = {"광어": 90, "우럭": 60, "참돔": 100, "감성돔": 65, "벵에돔": 55, "농어": 110};
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+    const guide = document.getElementById('guide-msg');
+    const stepInfo = document.getElementById('step-info');
+    let originalImg = null, points = [], step = 0, cardPx = 0;
 
-        if (!size) return alert('크기를 입력해주세요!');
-
-        // 💡 어종별 기준치 (데이터베이스 대신 로직으로 서열 계산)
-        // 기준: 광어 8짜, 우럭 5짜, 참돔 9짜 등
-        let baseSize = 40;
-        if (type === '광어') baseSize = 85;
-        if (type === '우럭') baseSize = 55;
-        if (type === '참돔') baseSize = 95;
-        if (type === '감성돔') baseSize = 65;
-        if (type === '농어') baseSize = 105;
-        if (type === '쭈꾸미') baseSize = 15; // 마리수 대신 길이(머리) 기준 예시
-
-        const score = (size / baseSize) * 100;
-        let rank = "";
-        let percent = "";
-        let msg = "";
-
-        if (score >= 95) {
-            rank = "전설의 조사";
-            percent = "상위 0.1%";
-            msg = `${name}님, 오늘 낚시 접으셔도 됩니다. 박물관으로 가시죠!`;
-            resultCard.classList.add('legend');
-        } else if (score >= 80) {
-            rank = "용왕의 아들";
-            percent = "상위 3%";
-            msg = "어디 가서 낚시 좀 한다고 어깨 펴고 다니셔도 됩니다!";
-        } else if (score >= 60) {
-            rank = "바다의 무법자";
-            percent = "상위 12%";
-            msg = "훌륭합니다! 밴드에 자랑하면 댓글 50개 각이네요.";
-        } else if (score >= 40) {
-            rank = "도시 어부";
-            percent = "상위 35%";
-            msg = "손맛 좀 보셨군요? 회 한 점에 소주 한 잔 딱입니다.";
-        } else {
-            rank = "방구석 낚시꾼";
-            percent = "상위 80%";
-            msg = "에이~ 방생하셨죠? 다음엔 대물 기원합니다!";
+    document.getElementById('file-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const img = new Image();
+            img.onload = function() {
+                originalImg = img;
+                canvas.width = img.width; canvas.height = img.height;
+                resetAll();
+                step = 1;
+                updateGuide("💳 <b>신용카드</b> 양쪽 끝을 콕! 콕! 찍으세요.", "#fee500", "2. 신용카드 측정 중...");
+                draw();
+            }
+            img.src = evt.target.result;
         }
+        reader.readAsDataURL(file);
+    });
 
-        // 데이터 채우기
-        document.getElementById('display-rank').innerText = rank;
-        document.getElementById('res-info').innerText = `${type} / ${size}cm`;
-        document.getElementById('res-percent').innerText = percent;
-        document.getElementById('res-msg').innerText = `"${msg}"`;
-        
-        resultCard.style.display = 'block';
+    function updateGuide(mainMsg, color, status) {
+        stepInfo.querySelector('.desc-txt').innerHTML = mainMsg;
+        stepInfo.style.borderLeftColor = color;
+        guide.innerHTML = status;
+        guide.style.background = color === "#fee500" ? "rgba(254, 229, 0, 0.9)" : "rgba(14, 165, 233, 0.9)";
+        if(color === "#fee500") guide.style.color = "#3c1e1e"; else guide.style.color = "#fff";
+    }
+
+    canvas.addEventListener('pointerdown', function(e) {
+        if (!originalImg || step > 2) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        points.push({x, y});
+
+        if (step === 1 && points.length === 2) {
+            cardPx = Math.sqrt(Math.pow(points[0].x - points[1].x, 2) + Math.pow(points[0].y - points[1].y, 2));
+            step = 2;
+            updateGuide("🐟 <b>물고기</b> 머리와 꼬리를 콕! 콕! 찍으세요.", "#0ea5e9", "3. 물고기 측정 중...");
+        } else if (step === 2 && points.length === 4) {
+            const fishPx = Math.sqrt(Math.pow(points[2].x - points[3].x, 2) + Math.pow(points[2].y - points[3].y, 2));
+            const cm = (fishPx / cardPx) * 8.56;
+            document.getElementById('measuredSize').value = cm.toFixed(1) + " cm";
+            updateGuide("✅ <b>측정 완료!</b> 아래 서열 인증 버튼을 누르세요.", "#2ecc71", "측정 완료! 서열을 확인하세요.");
+            step = 3;
+        }
+        draw();
+    });
+
+    function draw() {
+        if (!originalImg) return;
+        ctx.drawImage(originalImg, 0, 0);
+        if (points.length >= 2) drawLine(points[0], points[1], '#fee500');
+        if (points.length >= 4) drawLine(points[2], points[3], '#0ea5e9');
+        points.forEach((p, i) => {
+            ctx.beginPath(); ctx.arc(p.x, p.y, canvas.width * 0.015, 0, Math.PI*2);
+            ctx.fillStyle = i < 2 ? '#fee500' : '#0ea5e9'; ctx.fill();
+        });
+    }
+
+    function drawLine(p1, p2, color) {
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = color; ctx.lineWidth = canvas.width * 0.01; ctx.stroke();
+    }
+
+    function resetAll() {
+        points = []; cardPx = 0; step = originalImg ? 1 : 0;
+        document.getElementById('measuredSize').value = "";
+        document.getElementById('result-card').style.display = 'none';
+        if(originalImg) updateGuide("💳 <b>신용카드</b> 양쪽 끝을 콕! 콕! 찍으세요.", "#fee500", "2. 신용카드 측정 중...");
+        else updateGuide("1. [대물 사진 불러오기] 클릭 (옆에 신용카드 필수!)<br>2. 사진 위 신용카드 양쪽 끝을 콕! 콕! 찍기<br>3. 물고기 입술과 꼬리 끝을 콕! 콕! 찍기", "#fee500", "사진을 먼저 불러와주세요!");
+        draw();
+    }
+
+    function showRank() {
+        const size = parseFloat(document.getElementById('measuredSize').value);
+        if(!size) return alert("먼저 사진 위를 터치하여 측정해주세요!");
+        const type = document.getElementById('fishType').value, name = document.getElementById('fisherName').value || "무명조사";
+        const resCard = document.getElementById('result-card'), score = (size / (FISH_DATA[type] || 50)) * 100;
+        let r, p, m;
+        if (score >= 95) { r = "전설의 조사"; p = "0.1% 대물"; m = "용왕님이 형님 소리 하겠는데요?"; resCard.style.borderColor = "#fbbf24"; }
+        else if (score >= 80) { r = "용왕의 아들"; p = "상위 3%"; m = "어디 가서 낚시 좀 한다고 어깨 펴세요!"; resCard.style.borderColor = "#38bdf8"; }
+        else { r = "도시 어부"; p = "상위 30%"; m = "손맛 좀 보셨네요! 축하드립니다."; resCard.style.borderColor = "#38bdf8"; }
+        document.getElementById('display-rank').innerText = r;
+        document.getElementById('res-info').innerText = `${type} / ${size.toFixed(1)}cm`;
+        document.getElementById('res-percent').innerText = p;
+        document.getElementById('res-msg').innerText = `"${m}"`;
+        resCard.style.display = "block";
         window.scrollTo(0, document.body.scrollHeight);
     }
 </script>
