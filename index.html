@@ -1,22 +1,24 @@
-HTML
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>어신의 도구 - 정밀 돋보기 버전</title>
+    <title>어신의 도구 - 돋보기 정밀 측정</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
         body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 10px; background: #0f172a; color: #fff; text-align: center; }
         .container { max-width: 500px; margin: 0 auto; }
         
-        /* 가이드 박스 */
-        .full-guide { background: #1e293b; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 3px solid #fee500; text-align: left; }
-        .guide-title { font-size: 18px; font-weight: 900; color: #fee500; display: block; margin-bottom: 10px; text-align: center; border-bottom: 2px solid #334155; padding-bottom: 5px; }
-        .step { font-size: 13px; line-height: 1.5; margin-bottom: 8px; color: #cbd5e1; }
-        .step b { color: #0ea5e9; }
+        /* 💡 형님 특명: 처음부터 끝까지 지독하게 친절한 설명판 */
+        .full-guide { background: #1e293b; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 3px solid #fee500; text-align: left; }
+        .guide-title { font-size: 20px; font-weight: 900; color: #fee500; display: block; margin-bottom: 12px; text-align: center; border-bottom: 2px solid #334155; padding-bottom: 8px; }
+        .step { margin-bottom: 15px; font-size: 14px; line-height: 1.6; padding-left: 25px; position: relative; }
+        .step-num { position: absolute; left: 0; color: #fee500; font-weight: 900; font-size: 16px; }
+        .yellow { color: #fee500; font-weight: 900; }
+        .blue { color: #0ea5e9; font-weight: 900; }
+        .red { color: #ff4757; font-weight: 900; }
 
-        /* 캔버스 및 돋보기 영역 */
+        /* 사진 및 돋보기 영역 */
         #canvas-wrap { 
             width: 100%; height: 380px; background: #000; border-radius: 15px; 
             margin-bottom: 10px; border: 2px solid #334155; position: relative; 
@@ -24,38 +26,57 @@ HTML
         }
         canvas { width: 100%; height: 100%; object-fit: contain; }
         
-        /* 💡 핵심: 돋보기 창 */
+        /* 🔍 우측 상단 돋보기 창 */
         #magnifier {
-            position: absolute; top: 10px; right: 10px; width: 120px; height: 120px;
-            border: 3px solid #fee500; border-radius: 50%; overflow: hidden;
+            position: absolute; top: 10px; right: 10px; width: 130px; height: 130px;
+            border: 4px solid #fee500; border-radius: 50%; overflow: hidden;
             display: none; background: #000; pointer-events: none; z-index: 100;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
         #mag-canvas { width: 100%; height: 100%; }
 
         #live-status { 
-            position: absolute; top: 0; width: 100%; background: rgba(0,0,0,0.8); 
-            color: #fff; font-size: 13px; padding: 10px; font-weight: 900; border-bottom: 2px solid #fee500; 
+            position: absolute; top: 0; width: 100%; background: rgba(0,0,0,0.85); 
+            color: #fff; font-size: 14px; padding: 12px; font-weight: 900; border-bottom: 2px solid #fee500; 
         }
 
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 17px; margin-bottom: 10px; }
+        /* 버튼 및 입력창 */
+        .ui-box { background: #1e293b; padding: 15px; border-radius: 15px; border: 1px solid #334155; }
+        select, input[type="text"] { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; background: #0f172a; border: 1px solid #475569; color: #fff; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 18px; margin-bottom: 10px; }
         .btn-up { background: #fee500; color: #3c1e1e; }
         .btn-calc { background: #0ea5e9; color: white; }
-        input[type="text"] { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; background: #0f172a; border: 1px solid #475569; color: #fff; box-sizing: border-box; }
+        
+        #result-card { display: none; background: #000; padding: 25px; border-radius: 20px; border: 4px solid #fee500; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="full-guide">
-        <span class="guide-title">📏 사용 방법 (돋보기 기능 추가)</span>
-        <div class="step">1. <b>[사진 불러오기]</b> 후 화면을 누르세요.</div>
-        <div class="step">2. 손가락을 대면 <b>오른쪽 위에 확대창</b>이 뜹니다.</div>
-        <div class="step">3. 돋보기를 보면서 <b>카드 양끝 -> 물고기 양끝</b> 순서로 누르세요.</div>
+        <span class="guide-title">📏 사용 방법 (하나하나 따라 하세요)</span>
+        <div class="step">
+            <span class="step-num">1.</span> 물고기 바로 옆에 <span class="yellow">신용카드를 가로로</span> 나란히 눕혀놓고, 위에서 수직으로 사진을 찍으세요.
+        </div>
+        <div class="step">
+            <span class="step-num">2.</span> 노란색 <b>[내 사진 불러오기]</b> 버튼을 눌러 찍은 사진을 가져오세요.
+        </div>
+        <div class="step">
+            <span class="step-num">3.</span> 사진 위 신용카드의 <span class="yellow">왼쪽 끝</span>을 손가락으로 누르세요. 이때 <span class="red">우측 상단 돋보기</span>를 보며 정확히 모서리에 맞춘 뒤 손을 떼세요.
+        </div>
+        <div class="step">
+            <span class="step-num">4.</span> 이어서 카드의 <span class="yellow">오른쪽 끝</span>을 똑같이 터치하세요. (노란 선이 생깁니다)
+        </div>
+        <div class="step">
+            <span class="step-num">5.</span> 이제 <span class="blue">물고기 입술 끝</span>과 <span class="blue">꼬리 끝</span>을 순서대로 터치하세요. (파란 선이 생깁니다)
+        </div>
+        <div class="step" style="margin-bottom:0;">
+            <span class="step-num">6.</span> 어종을 선택하고 <b>[서열 확인하기]</b>를 누르면 끝!
+        </div>
     </div>
 
     <input type="file" id="file-input" accept="image/*" style="display:none;">
-    <button class="btn btn-up" onclick="document.getElementById('file-input').click()">📸 1. 내 사진 불러오기</button>
+    <button class="btn btn-up" onclick="document.getElementById('file-input').click()">📸 내 사진 불러오기</button>
     
     <div id="canvas-wrap">
         <canvas id="mainCanvas"></canvas>
@@ -63,18 +84,34 @@ HTML
         <div id="live-status">사진을 먼저 불러와주세요!</div>
     </div>
 
-    <div style="background:#1e293b; padding:15px; border-radius:15px;">
-        <select id="fishType" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; background:#0f172a; border:1px solid #475569; color:#fff;">
-            <option value="광어">광어 (85cm)</option><option value="우럭">우럭 (55cm)</option>
-            <option value="붕어">붕어 (45cm)</option><option value="배스">배스 (60cm)</option>
+    <div class="ui-box">
+        <select id="fishType">
+            <optgroup label="바다">
+                <option value="광어">광어 (85cm)</option><option value="우럭">우럭 (55cm)</option>
+                <option value="참돔">참돔 (95cm)</option><option value="감성돔">감성돔 (60cm)</option>
+            </optgroup>
+            <optgroup label="민물">
+                <option value="붕어">붕어 (45cm)</option><option value="배스">배스 (60cm)</option>
+                <option value="쏘가리">쏘가리 (55cm)</option><option value="가물치">가물치 (90cm)</option>
+            </optgroup>
         </select>
-        <input type="text" id="fisherName" placeholder="조사님 성함">
-        <button class="btn btn-calc" onclick="showRank()">⚖️ 2. 서열 확인하기</button>
-        <button class="btn" style="background:#444; color:#fff; font-size:12px; padding:10px;" onclick="location.reload()">새로 하기</button>
+        <input type="text" id="fisherName" placeholder="조사님 성함 입력">
+        <button class="btn btn-calc" onclick="showRank()">⚖️ 서열 확인하기</button>
+        <button class="btn" style="background:#444; color:#fff; font-size:12px; padding:10px;" onclick="location.reload()">새로 측정하기</button>
+    </div>
+
+    <div id="result-card">
+        <div style="font-size:12px; color:#fee500; font-weight:bold; margin-bottom:10px;">전국 낚시 서열 인증서</div>
+        <div id="res-rank" style="font-size:36px; font-weight:900; color:#fee500;"></div>
+        <div id="res-size" style="font-size:20px; margin:10px 0; color:#fff;"></div>
+        <p id="res-msg" style="color:#94a3b8; font-size:14px; line-height:1.5;"></p>
     </div>
 </div>
 
 <script>
+    // 어종 데이터 (30종 중 핵심 예시)
+    const STANDARDS = {"광어": 85, "우럭": 55, "참돔": 95, "감성돔": 60, "붕어": 45, "배스": 60, "쏘가리": 55, "가물치": 90};
+
     const canvas = document.getElementById('mainCanvas');
     const ctx = canvas.getContext('2d');
     const mag = document.getElementById('magnifier');
@@ -94,8 +131,8 @@ HTML
                 originalImg = img;
                 canvas.width = img.width; canvas.height = img.height;
                 magCanvas.width = 200; magCanvas.height = 200;
-                points = []; step = 1; 
-                liveStatus.innerHTML = "💳 [카드 터치] 돋보기를 보고 카드 양끝을 누르세요!";
+                points = []; step = 1; cardPx = 0;
+                liveStatus.innerHTML = "💳 [카드 터치] 돋보기를 보고 <b style='color:#fee500'>카드 양 끝</b>을 누르세요!";
                 draw();
             }
             img.src = evt.target.result;
@@ -103,7 +140,7 @@ HTML
         reader.readAsDataURL(file);
     });
 
-    // 💡 돋보기 및 터치 로직
+    // 💡 돋보기 컨트롤 로직
     function handlePointer(e) {
         if (!originalImg || step > 2) return;
         
@@ -111,14 +148,16 @@ HTML
         const x = (e.clientX - rect.left) * (canvas.width / rect.width);
         const y = (e.clientY - rect.top) * (canvas.height / rect.height);
 
-        // 돋보기 보여주기
-        mag.style.display = 'block';
-        magCtx.clearRect(0,0,200,200);
-        magCtx.drawImage(canvas, x - 20, y - 20, 40, 40, 0, 0, 200, 200);
-        // 돋보기 가운데 조준선
-        magCtx.strokeStyle = 'red'; magCtx.lineWidth = 2;
-        magCtx.beginPath(); magCtx.moveTo(100, 80); magCtx.lineTo(100, 120); magCtx.stroke();
-        magCtx.beginPath(); magCtx.moveTo(80, 100); magCtx.lineTo(120, 100); magCtx.stroke();
+        if (e.type === 'pointerdown' || e.type === 'pointermove') {
+            mag.style.display = 'block';
+            magCtx.clearRect(0, 0, 200, 200);
+            // 원본 캔버스의 해당 영역을 5배 확대해서 돋보기에 그림
+            magCtx.drawImage(canvas, x - 20, y - 20, 40, 40, 0, 0, 200, 200);
+            // 돋보기 십자 조준선
+            magCtx.strokeStyle = '#fee500'; magCtx.lineWidth = 2;
+            magCtx.beginPath(); magCtx.moveTo(100, 70); magCtx.lineTo(100, 130); magCtx.stroke();
+            magCtx.beginPath(); magCtx.moveTo(70, 100); magCtx.lineTo(130, 100); magCtx.stroke();
+        }
 
         if (e.type === 'pointerup') {
             mag.style.display = 'none';
@@ -126,11 +165,11 @@ HTML
             if (step === 1 && points.length === 2) {
                 cardPx = Math.sqrt(Math.pow(points[0].x - points[1].x, 2) + Math.pow(points[0].y - points[1].y, 2));
                 step = 2;
-                liveStatus.innerHTML = "🐟 [고기 터치] 이제 물고기 머리와 꼬리를 누르세요!";
+                liveStatus.innerHTML = "🐟 [고기 터치] 돋보기를 보고 <b style='color:#0ea5e9'>물고기 머리/꼬리 끝</b>을 누르세요!";
             } else if (step === 2 && points.length === 4) {
                 const fishPx = Math.sqrt(Math.pow(points[2].x - points[3].x, 2) + Math.pow(points[2].y - points[3].y, 2));
                 window.finalCm = ((fishPx / cardPx) * 8.56).toFixed(1);
-                liveStatus.innerHTML = "✅ 완료! [서열 확인] 버튼을 누르세요.";
+                liveStatus.innerHTML = "✅ 측정 완료! 아래 [서열 확인] 버튼을 누르세요.";
                 step = 3;
             }
             draw();
@@ -154,13 +193,23 @@ HTML
 
     function drawLine(p1, p2, color) {
         ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = color; ctx.lineWidth = canvas.width * 0.01; ctx.stroke();
+        ctx.strokeStyle = color; ctx.lineWidth = canvas.width * 0.012; ctx.stroke();
     }
 
     function showRank() {
-        if(!window.finalCm) return alert("먼저 카드와 고기를 터치해주세요!");
-        alert(`${window.finalCm}cm 기록 확인! 서열 인증을 시작합니다.`);
-        // 결과 카드 로직 생략 (기존과 동일)
+        if(!window.finalCm) return alert("설명대로 카드와 물고기를 먼저 터치해주세요!");
+        const type = document.getElementById('fishType').value;
+        const name = document.getElementById('fisherName').value || "조사";
+        const score = (window.finalCm / (STANDARDS[type] || 50)) * 100;
+        let rank, msg;
+        if (score >= 95) { rank = "전설의 조사"; msg = "용왕님이 형님 소리 하겠는데요? 대박입니다!"; }
+        else if (score >= 80) { rank = "용왕의 아들"; msg = "어디 가서 낚시 좀 한다고 어깨 펴세요!"; }
+        else { rank = "도시 어부"; msg = "손맛 좀 보셨네요! 축하드립니다."; }
+        document.getElementById('res-rank').innerText = rank;
+        document.getElementById('res-size').innerText = `${type} / ${window.finalCm}cm`;
+        document.getElementById('res-msg').innerText = `"${name}님, ${msg}"`;
+        document.getElementById('result-card').style.display = "block";
+        window.scrollTo(0, document.body.scrollHeight);
     }
 </script>
 
