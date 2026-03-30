@@ -9,7 +9,7 @@
         body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 10px; background: #0f172a; color: #fff; text-align: center; }
         .container { max-width: 500px; margin: 0 auto; }
         
-        /* 💡 형님 특명: 처음부터 끝까지 지독하게 친절한 설명판 */
+        /* 💡 지독하게 친절한 설명판 */
         .full-guide { background: #1e293b; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 3px solid #fee500; text-align: left; }
         .guide-title { font-size: 20px; font-weight: 900; color: #fee500; display: block; margin-bottom: 12px; text-align: center; border-bottom: 1px solid #334155; padding-bottom: 8px; }
         .step { margin-bottom: 15px; font-size: 14px; line-height: 1.6; padding-left: 25px; position: relative; }
@@ -35,8 +35,16 @@
 
         /* 💰 수익 창출 구역 (형님 진짜 정보!) */
         .revenue-box { margin-top: 25px; padding: 20px; background: #1e293b; border-radius: 15px; border: 2px solid #475569; }
-        .kakao-pay { background: #fee500; color: #3c1e1e; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: 900; margin-bottom: 15px; font-size: 16px; box-shadow: 0 4px 0 #d1bc00; }
-        .coupang-link { background: #fff; color: #000; padding: 15px; border-radius: 10px; font-weight: 900; font-size: 15px; cursor: pointer; display: block; text-decoration: none; border: 1px solid #ccc; }
+        .kakao-pay { background: #fee500; color: #3c1e1e; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: 900; margin-bottom: 20px; font-size: 16px; box-shadow: 0 4px 0 #d1bc00; }
+        
+        /* 🔍 쿠팡 검색창 디자인 강화 */
+        .coupang-search-bar { 
+            background: #fff; border: 2px solid #0073e9; border-radius: 10px; 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 12px 15px; text-decoration: none; margin-bottom: 10px;
+        }
+        .coupang-search-bar span { color: #666; font-size: 14px; }
+        .search-btn { background: #0073e9; color: #fff; padding: 6px 14px; border-radius: 5px; font-weight: 700; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -89,7 +97,12 @@
     <div class="revenue-box">
         <p style="font-size:13px; margin-bottom:12px; color:#94a3b8;">오늘 대물을 낚으셨나요? 찬둥이에게 응원의 커피 한 잔!</p>
         <a href="https://qr.kakaopay.com/FRK8J0SAD" class="kakao-pay" target="_blank">💛 카카오페이로 팁 쏘기 (송금)</a>
-        <a href="https://link.coupang.com/a/AF4757238" class="coupang-link" target="_blank">🛒 낚시용품 최저가 검색 (쿠팡)</a>
+
+        <p style="font-size:12px; margin: 10px 0 10px; color:#94a3b8;">부족한 낚시 장비는 여기서 최저가 검색!</p>
+        <a href="https://link.coupang.com/a/AF4757238" class="coupang-search-bar" target="_blank">
+            <span>낚시용품 최저가 검색...</span>
+            <div class="search-btn">검색</div>
+        </a>
         <p style="font-size:10px; margin-top:15px; opacity:0.6; line-height:1.4;">이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>이에 따른 일정액의 수수료를 제공받습니다.</p>
     </div>
 </div>
