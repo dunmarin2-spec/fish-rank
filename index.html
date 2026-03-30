@@ -12,12 +12,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
         
-        /* 💡 반응형 핵심: 모든 기기에서 꽉 차게 설정 */
+        /* 💡 반응형 핵심: 화면 크기에 상관없이 꽉 차게 */
         * { box-sizing: border-box; }
         body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 10px; background: #0f172a; color: #fff; text-align: center; overflow-x: hidden; }
         .container { width: 100%; max-width: 500px; margin: 0 auto; }
         
-        /* 💡 형님 특명: 처음부터 끝까지 지독하게 친절한 설명판 (원형 유지) */
+        /* 💡 v11.0 설명판 디자인 및 내용 100% 유지 */
         .full-guide { background: #1e293b; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 3px solid #fee500; text-align: left; }
         .guide-title { font-size: 20px; font-weight: 900; color: #fee500; display: block; margin-bottom: 12px; text-align: center; border-bottom: 1px solid #334155; padding-bottom: 8px; }
         .step { margin-bottom: 15px; font-size: 14px; line-height: 1.6; padding-left: 25px; position: relative; }
@@ -26,14 +26,14 @@
         .blue { color: #0ea5e9; font-weight: 900; }
         .red { color: #ff4757; font-weight: 900; }
 
-        /* 💡 반응형 핵심: 사진 영역이 폰 너비에 맞춰 자동 조절 */
+        /* 💡 반응형 핵심: 사진 영역이 폰 너비에 따라 자동 조절 */
         #canvas-wrap { width: 100%; height: auto; aspect-ratio: 4/3; background: #000; border-radius: 15px; margin-bottom: 10px; border: 2px solid #334155; position: relative; overflow: hidden; touch-action: none; }
         canvas { width: 100%; height: 100%; object-fit: contain; }
         #magnifier { position: absolute; top: 10px; right: 10px; width: 130px; height: 130px; border: 4px solid #fee500; border-radius: 50%; overflow: hidden; display: none; pointer-events: none; z-index: 100; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
         #mag-canvas { width: 100%; height: 100%; }
         #live-status { position: absolute; top: 0; width: 100%; background: rgba(0,0,0,0.85); color: #fff; font-size: 14px; padding: 12px; font-weight: 900; border-bottom: 2px solid #fee500; }
 
-        /* 버튼 및 입력창 */
+        /* 입력 및 버튼 */
         .ui-box { background: #1e293b; padding: 15px; border-radius: 15px; border: 1px solid #334155; margin-bottom: 20px; }
         select, input[type="text"] { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; background: #0f172a; border: 1px solid #475569; color: #fff; font-size: 16px; box-sizing: border-box; }
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 18px; margin-bottom: 10px; }
@@ -41,15 +41,13 @@
         .btn-calc { background: #0ea5e9; color: white; box-shadow: 0 4px 0 #0284c7; }
         #result-card { display: none; background: #000; padding: 25px; border-radius: 20px; border: 4px solid #fee500; margin-top: 15px; }
 
-        /* 💰 수익 창출 구역 */
+        /* 수익 구역 */
         .revenue-box { margin-top: 25px; padding: 20px; background: #1e293b; border-radius: 15px; border: 2px solid #475569; }
         .kakao-pay { background: #fee500; color: #3c1e1e; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: 900; margin-bottom: 25px; font-size: 16px; box-shadow: 0 4px 0 #d1bc00; }
-        .coupang-search-widget { background: #fff; padding: 10px; border-radius: 10px; overflow: hidden; }
         .coupang-form-wrap { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="full-guide">
         <span class="guide-title">📏 사용 방법 (하나하나 따라 하세요)</span>
@@ -62,21 +60,15 @@
 
     <input type="file" id="file-input" accept="image/*" style="display:none;">
     <button class="btn btn-up" onclick="document.getElementById('file-input').click()">📸 내 사진 불러오기</button>
-    
-    <div id="canvas-wrap">
-        <canvas id="mainCanvas"></canvas>
-        <div id="magnifier"><canvas id="mag-canvas"></canvas></div>
-        <div id="live-status">사진을 먼저 불러와주세요!</div>
-    </div>
+    <div id="canvas-wrap"><canvas id="mainCanvas"></canvas><div id="magnifier"><canvas id="mag-canvas"></canvas></div><div id="live-status">사진을 먼저 불러와주세요!</div></div>
 
     <div class="ui-box">
         <select id="fishType">
-            <optgroup label="🐟 바다/민물 42종 풀세트">
-                <option value="붕어">붕어 (45cm)</option><option value="광어">광어 (85cm)</option>
-                <option value="우럭">우럭 (55cm)</option><option value="참돔">참돔 (95cm)</option>
-                <option value="감성돔">감성돔 (60cm)</option><option value="배스">배스 (60cm)</option>
-                <option value="가물치">가물치 (90cm)</option><option value="부시리">부시리 (140cm)</option>
-                <option value="무늬오징어">무늬오징어(몸통)</option><option value="쏘가리">쏘가리 (55cm)</option>
+            <optgroup label="🐟 바다 어종">
+                <option value="광어">광어 (85cm)</option><option value="우럭">우럭 (55cm)</option><option value="참돔">참돔 (95cm)</option><option value="감성돔">감성돔 (60cm)</option><option value="벵에돔">벵에돔 (55cm)</option><option value="돌돔">돌돔 (70cm)</option><option value="옥돔">옥돔 (50cm)</option><option value="농어">농어 (105cm)</option><option value="부시리">부시리 (140cm)</option><option value="방어">방어 (110cm)</option><option value="삼치">삼치 (110cm)</option><option value="보리멸">보리멸 (30cm)</option><option value="도다리">도다리 (50cm)</option><option value="볼락">볼락 (35cm)</option><option value="쥐치">쥐치 (40cm)</option><option value="숭어">숭어 (85cm)</option><option value="무늬오징어">무늬오징어 (45cm)</option><option value="갑오징어">갑오징어 (35cm)</option><option value="한치">한치 (35cm)</option><option value="낙지">낙지 (50cm)</option>
+            </optgroup>
+            <optgroup label="🐟 민물 어종">
+                <option value="붕어">붕어 (45cm)</option><option value="잉어">잉어 (90cm)</option><option value="향어">향어 (80cm)</option><option value="가물치">가물치 (90cm)</option><option value="메기">메기 (80cm)</option><option value="배스">배스 (60cm)</option><option value="블루길">블루길 (25cm)</option><option value="쏘가리">쏘가리 (55cm)</option><option value="꺽지">꺽지 (28cm)</option><option value="산천어">산천어 (45cm)</option>
             </optgroup>
         </select>
         <input type="text" id="fisherName" placeholder="조사님 성함 입력">
@@ -93,108 +85,48 @@
     <div class="revenue-box">
         <p style="font-size:13px; margin-bottom:12px; color:#94a3b8;">오늘 대물을 낚으셨나요? 찬둥이 커피 한 잔!</p>
         <a href="https://qr.kakaopay.com/FRK8J0SAD" class="kakao-pay" target="_blank">💛찬둥이에게 커피 한 잔 후원하기</a>
-
         <div class="coupang-form-wrap">
             <form action="https://www.coupang.com/np/search" method="get" target="_blank" style="display: flex; gap: 5px;">
                 <input type="hidden" name="channel" value="AF4757238">
-                <input type="text" name="q" placeholder="낚시용품 최저가 검색" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; outline: none; color: black;">
-                <button type="submit" style="background: #334155; color: white; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer;">검색</button>
+                <input type="text" name="q" placeholder="낚시용품 최저가 검색" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; color: black; outline: none;">
+                <button type="submit" style="background: #334155; color: white; border: none; padding: 0 15px; border-radius: 10px; font-weight: bold; font-size: 12px;">검색</button>
             </form>
-            <p style="font-size:9px; color: #94a3b8; mt-3; text-align:center; margin-top: 10px;">"이 포스팅은 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다."</p>
+            <p style="font-size:9px; color: #94a3b8; margin-top: 10px; text-align:center;">"이 포스팅은 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다."</p>
         </div>
     </div>
 </div>
 
 <script>
-    const STANDARDS = {"붕어": 45, "광어": 85, "우럭": 55, "참돔": 95, "감성돔": 60, "배스": 60, "가물치": 90, "부시리": 140, "무늬오징어": 45, "쏘가리": 55, "잉어": 90, "메기": 80, "벵에돔": 55, "돌돔": 70, "방어": 110, "삼치": 110, "보리멸": 30, "도다리": 50, "볼락": 35, "쥐치": 40, "숭어": 85, "꺽지": 28};
-    const canvas = document.getElementById('mainCanvas');
-    const ctx = canvas.getContext('2d');
-    const mag = document.getElementById('magnifier');
-    const magCanvas = document.getElementById('mag-canvas');
-    const magCtx = magCanvas.getContext('2d');
-    const liveStatus = document.getElementById('live-status');
-    let originalImg = null, points = [], step = 0, cardPx = 0;
-
+    const STANDARDS = {"광어": 85, "우럭": 55, "참돔": 95, "감성돔": 60, "벵에돔": 55, "돌돔": 70, "옥돔": 50, "농어": 105, "부시리": 140, "방어": 110, "삼치": 110, "보리멸": 30, "도다리": 50, "볼락": 35, "쥐치": 40, "숭어": 85, "무늬오징어": 45, "갑오징어": 35, "한치": 35, "낙지": 50, "붕어": 45, "잉어": 90, "향어": 80, "가물치": 90, "메기": 80, "배스": 60, "블루길": 25, "쏘가리": 55, "꺽지": 28, "산천어": 45};
+    const canvas = document.getElementById('mainCanvas'); const ctx = canvas.getContext('2d');
+    const mag = document.getElementById('magnifier'); const magCanvas = document.getElementById('mag-canvas'); const magCtx = magCanvas.getContext('2d');
+    const liveStatus = document.getElementById('live-status'); let originalImg = null, points = [], step = 0, cardPx = 0;
+    
     document.getElementById('file-input').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            const img = new Image();
-            img.onload = function() {
-                originalImg = img;
-                canvas.width = img.width; canvas.height = img.height;
-                magCanvas.width = 200; magCanvas.height = 200;
-                points = []; step = 1; cardPx = 0;
-                liveStatus.innerHTML = "💳 [카드 터치] 돋보기를 보고 <b style='color:#fee500'>카드 양 끝</b>을 누르세요!";
-                draw();
-            }
-            img.src = evt.target.result;
-        }
-        reader.readAsDataURL(file);
+        const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
+        reader.onload = function(evt) { const img = new Image(); img.onload = function() {
+            originalImg = img; canvas.width = img.width; canvas.height = img.height; magCanvas.width = 200; magCanvas.height = 200;
+            points = []; step = 1; cardPx = 0; liveStatus.innerHTML = "💳 [카드 터치] 돋보기를 보고 <b style='color:#fee500'>카드 양 끝</b>을 누르세요!"; draw();
+        }; img.src = evt.target.result; }; reader.readAsDataURL(file);
     });
 
     function handlePointer(e) {
-        if (!originalImg || step > 2) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        if (!originalImg || step > 2) return; const rect = canvas.getBoundingClientRect(); const x = (e.clientX - rect.left) * (canvas.width / rect.width); const y = (e.clientY - rect.top) * (canvas.height / rect.height);
         if (e.type === 'pointerdown' || e.type === 'pointermove') {
-            mag.style.display = 'block';
-            magCtx.clearRect(0,0,200,200);
-            magCtx.drawImage(canvas, x - 20, y - 20, 40, 40, 0, 0, 200, 200);
-            magCtx.strokeStyle = '#fee500'; magCtx.lineWidth = 2;
-            magCtx.beginPath(); magCtx.moveTo(100, 70); magCtx.lineTo(100, 130); magCtx.stroke();
-            magCtx.beginPath(); magCtx.moveTo(70, 100); magCtx.lineTo(130, 100); magCtx.stroke();
+            mag.style.display = 'block'; magCtx.clearRect(0,0,200,200); magCtx.drawImage(canvas, x - 20, y - 20, 40, 40, 0, 0, 200, 200);
+            magCtx.strokeStyle = '#fee500'; magCtx.lineWidth = 2; magCtx.beginPath(); magCtx.moveTo(100, 70); magCtx.lineTo(100, 130); magCtx.stroke(); magCtx.beginPath(); magCtx.moveTo(70, 100); magCtx.lineTo(130, 100); magCtx.stroke();
         }
         if (e.type === 'pointerup') {
-            mag.style.display = 'none';
-            points.push({x, y});
-            if (step === 1 && points.length === 2) {
-                cardPx = Math.sqrt(Math.pow(points[0].x - points[1].x, 2) + Math.pow(points[0].y - points[1].y, 2));
-                step = 2;
-                liveStatus.innerHTML = "🐟 [고기 터치] 돋보기를 보고 <b style='color:#0ea5e9'>물고기 머리/꼬리 끝</b>을 누르세요!";
-            } else if (step === 2 && points.length === 4) {
-                const fishPx = Math.sqrt(Math.pow(points[2].x - points[3].x, 2) + Math.pow(points[2].y - points[3].y, 2));
-                window.finalCm = ((fishPx / cardPx) * 8.56).toFixed(1);
-                liveStatus.innerHTML = "✅ 완료! 아래 [서열 확인] 버튼을 누르세요.";
-                step = 3;
-            }
+            mag.style.display = 'none'; points.push({x, y});
+            if (step === 1 && points.length === 2) { cardPx = Math.sqrt(Math.pow(points[0].x - points[1].x, 2) + Math.pow(points[0].y - points[1].y, 2)); step = 2; liveStatus.innerHTML = "🐟 [고기 터치] 돋보기를 보고 <b style='color:#0ea5e9'>물고기 머리/꼬리 끝</b>을 누르세요!"; }
+            else if (step === 2 && points.length === 4) { const fishPx = Math.sqrt(Math.pow(points[2].x - points[3].x, 2) + Math.pow(points[2].y - points[3].y, 2)); window.finalCm = ((fishPx / cardPx) * 8.56).toFixed(1); liveStatus.innerHTML = "✅ 완료! 아래 [서열 확인] 버튼을 누르세요."; step = 3; }
             draw();
         }
     }
-    canvas.addEventListener('pointerdown', handlePointer);
-    canvas.addEventListener('pointermove', handlePointer);
-    canvas.addEventListener('pointerup', handlePointer);
-    function draw() {
-        if (!originalImg) return;
-        ctx.drawImage(originalImg, 0, 0);
-        if (points.length >= 2) drawLine(points[0], points[1], '#fee500');
-        if (points.length >= 4) drawLine(points[2], points[3], '#0ea5e9');
-        points.forEach((p, i) => {
-            ctx.beginPath(); ctx.arc(p.x, p.y, canvas.width * 0.015, 0, Math.PI*2);
-            ctx.fillStyle = i < 2 ? '#fee500' : '#0ea5e9'; ctx.fill();
-        });
-    }
-    function drawLine(p1, p2, color) {
-        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = color; ctx.lineWidth = canvas.width * 0.012; ctx.stroke();
-    }
-    function showRank() {
-        if(!window.finalCm) return alert("카드와 고기를 먼저 터치해주세요!");
-        const type = document.getElementById('fishType').value;
-        const name = document.getElementById('fisherName').value || "조사";
-        const score = (window.finalCm / (STANDARDS[type] || 50)) * 100;
-        let rank, msg;
-        if (score >= 95) { rank = "전설의 조사"; msg = "용왕님이 형님 소리 하겠는데요? 대박입니다!"; }
-        else if (score >= 80) { rank = "용왕의 아들"; msg = "어디 가서 낚시 좀 한다고 어깨 펴세요!"; }
-        else { rank = "도시 어부"; msg = "손맛 좀 보셨네요! 축하드립니다."; }
-        document.getElementById('res-rank').innerText = rank;
-        document.getElementById('res-size').innerText = `${type} / ${window.finalCm}cm`;
-        document.getElementById('res-msg').innerText = `"${name}님, ${msg}"`;
-        document.getElementById('result-card').style.display = "block";
-        window.scrollTo(0, document.body.scrollHeight);
-    }
+    canvas.addEventListener('pointerdown', handlePointer); canvas.addEventListener('pointermove', handlePointer); canvas.addEventListener('pointerup', handlePointer);
+    function draw() { if (!originalImg) return; ctx.drawImage(originalImg, 0, 0); if (points.length >= 2) drawLine(points[0], points[1], '#fee500'); if (points.length >= 4) drawLine(points[2], points[3], '#0ea5e9'); points.forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, canvas.width * 0.015, 0, Math.PI*2); ctx.fillStyle = i < 2 ? '#fee500' : '#0ea5e9'; ctx.fill(); }); }
+    function drawLine(p1, p2, color) { ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.strokeStyle = color; ctx.lineWidth = canvas.width * 0.012; ctx.stroke(); }
+    function showRank() { if(!window.finalCm) return alert("카드와 고기를 먼저 터치해주세요!"); const type = document.getElementById('fishType').value; const name = document.getElementById('fisherName').value || "조사"; const score = (window.finalCm / (STANDARDS[type] || 50)) * 100; let rank, msg; if (score >= 95) { rank = "전설의 조사"; msg = "용왕님이 형님 소리 하겠는데요? 대박입니다!"; } else if (score >= 80) { rank = "용왕의 아들"; msg = "어디 가서 낚시 좀 한다고 어깨 펴세요!"; } else { rank = "도시 어부"; msg = "손맛 좀 보셨네요! 축하드립니다."; } document.getElementById('res-rank').innerText = rank; document.getElementById('res-size').innerText = `${type} / ${window.finalCm}cm`; document.getElementById('res-msg').innerText = `"${name}님, ${msg}"`; document.getElementById('result-card').style.display = "block"; window.scrollTo(0, document.body.scrollHeight); }
 </script>
 </body>
 </html>
