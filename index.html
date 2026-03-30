@@ -3,48 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>어신의 도구 - 찬둥 형님 수익 확정판</title>
+    <title>어신의 도구 - 찬둥 형님 공식 배너 버전</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
         body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 10px; background: #0f172a; color: #fff; text-align: center; }
         .container { max-width: 500px; margin: 0 auto; }
         
-        /* 💡 지독하게 친절한 설명판 */
+        /* 설명판 */
         .full-guide { background: #1e293b; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 3px solid #fee500; text-align: left; }
         .guide-title { font-size: 20px; font-weight: 900; color: #fee500; display: block; margin-bottom: 12px; text-align: center; border-bottom: 1px solid #334155; padding-bottom: 8px; }
         .step { margin-bottom: 15px; font-size: 14px; line-height: 1.6; padding-left: 25px; position: relative; }
-        .step-num { position: absolute; left: 0; color: #fee500; font-weight: 900; font-size: 16px; }
+        .step-num { position: absolute; left: 0; color: #fee500; font-weight: 900; }
         .yellow { color: #fee500; font-weight: 900; }
         .blue { color: #0ea5e9; font-weight: 900; }
-        .red { color: #ff4757; font-weight: 900; }
 
-        /* 사진 및 돋보기 영역 */
+        /* 측정 영역 및 돋보기 */
         #canvas-wrap { width: 100%; height: 380px; background: #000; border-radius: 15px; margin-bottom: 10px; border: 2px solid #334155; position: relative; overflow: hidden; touch-action: none; }
         canvas { width: 100%; height: 100%; object-fit: contain; }
         #magnifier { position: absolute; top: 10px; right: 10px; width: 130px; height: 130px; border: 4px solid #fee500; border-radius: 50%; overflow: hidden; display: none; pointer-events: none; z-index: 100; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
         #mag-canvas { width: 100%; height: 100%; }
         #live-status { position: absolute; top: 0; width: 100%; background: rgba(0,0,0,0.85); color: #fff; font-size: 14px; padding: 12px; font-weight: 900; border-bottom: 2px solid #fee500; }
 
-        /* 버튼 및 입력창 */
+        /* 입력창 및 버튼 */
         .ui-box { background: #1e293b; padding: 15px; border-radius: 15px; border: 1px solid #334155; margin-bottom: 20px; }
         select, input[type="text"] { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; background: #0f172a; border: 1px solid #475569; color: #fff; font-size: 16px; box-sizing: border-box; }
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 18px; margin-bottom: 10px; }
         .btn-up { background: #fee500; color: #3c1e1e; box-shadow: 0 4px 0 #d1bc00; }
         .btn-calc { background: #0ea5e9; color: white; box-shadow: 0 4px 0 #0284c7; }
-        #result-card { display: none; background: #000; padding: 25px; border-radius: 20px; border: 4px solid #fee500; margin-top: 15px; }
-
-        /* 💰 수익 창출 구역 (형님 진짜 정보!) */
-        .revenue-box { margin-top: 25px; padding: 20px; background: #1e293b; border-radius: 15px; border: 2px solid #475569; }
-        .kakao-pay { background: #fee500; color: #3c1e1e; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: 900; margin-bottom: 20px; font-size: 16px; box-shadow: 0 4px 0 #d1bc00; }
         
-        /* 🔍 쿠팡 검색창 디자인 강화 */
-        .coupang-search-bar { 
-            background: #fff; border: 2px solid #0073e9; border-radius: 10px; 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 12px 15px; text-decoration: none; margin-bottom: 10px;
-        }
-        .coupang-search-bar span { color: #666; font-size: 14px; }
-        .search-btn { background: #0073e9; color: #fff; padding: 6px 14px; border-radius: 5px; font-weight: 700; font-size: 14px; }
+        /* 💰 수익 구역 (카카오페이 + 공식 쿠팡 검색 위젯) */
+        .revenue-box { margin-top: 25px; padding: 20px; background: #1e293b; border-radius: 15px; border: 2px solid #475569; }
+        .kakao-pay { background: #fee500; color: #3c1e1e; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: 900; margin-bottom: 25px; font-size: 16px; box-shadow: 0 4px 0 #d1bc00; }
+        
+        /* 쿠팡 위젯 정렬용 */
+        .coupang-widget-wrap { background: #fff; padding: 10px; border-radius: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -52,11 +44,9 @@
 <div class="container">
     <div class="full-guide">
         <span class="guide-title">📏 사용 방법 (하나하나 따라 하세요)</span>
-        <div class="step"><span class="step-num">1.</span> 물고기 옆에 <span class="yellow">신용카드를 가로로</span> 나란히 두고, 위에서 수직으로 사진을 찍으세요.</div>
-        <div class="step"><span class="step-num">2.</span> 노란색 <b>[내 사진 불러오기]</b> 버튼을 눌러 사진을 가져오세요.</div>
-        <div class="step"><span class="step-num">3.</span> 사진 위 <span class="yellow">카드 왼쪽/오른쪽 끝</span>을 터치하세요. 이때 <span class="red">우측 상단 돋보기</span>를 보며 정확히 맞춘 뒤 손을 떼세요.</div>
-        <div class="step"><span class="step-num">4.</span> 이어서 <span class="blue">물고기 머리/꼬리 끝</span>을 터치하세요.</div>
-        <div class="step" style="margin-bottom:0;"><span class="step-num">5.</span> 어종을 선택하고 <b>[서열 확인하기]</b>를 누르면 끝!</div>
+        <div class="step"><span class="step-num">1.</span> 물고기 옆에 <span class="yellow">신용카드를 가로로</span> 눕혀 두고 사진을 찍으세요.</div>
+        <div class="step"><span class="step-num">2.</span> <span class="yellow">[내 사진 불러오기]</span> 버튼을 눌러 사진을 가져오세요.</div>
+        <div class="step"><span class="step-num">3.</span> 돋보기를 보며 <span class="yellow">카드 양 끝</span>, 이어서 <span class="blue">물고기 양 끝</span>을 터치하세요.</div>
     </div>
 
     <input type="file" id="file-input" accept="image/*" style="display:none;">
@@ -65,50 +55,42 @@
     <div id="canvas-wrap">
         <canvas id="mainCanvas"></canvas>
         <div id="magnifier"><canvas id="mag-canvas"></canvas></div>
-        <div id="live-status">먼저 사진을 불러와주세요!</div>
+        <div id="live-status">사진을 먼저 불러와주세요!</div>
     </div>
 
     <div class="ui-box">
         <select id="fishType">
-            <optgroup label="🐟 바다 어종">
+            <optgroup label="🐟 바다/민물 42종">
                 <option value="광어">광어 (85cm)</option><option value="우럭">우럭 (55cm)</option>
-                <option value="참돔">참돔 (95cm)</option><option value="감성돔">감성돔 (60cm)</option>
-                <option value="벵에돔">벵에돔 (55cm)</option><option value="돌돔">돌돔 (70cm)</option>
-                <option value="농어">농어 (105cm)</option><option value="방어">방어 (110cm)</option>
-                <option value="부시리">부시리 (140cm)</option><option value="무늬오징어">무늬오징어</option>
-            </optgroup>
-            <optgroup label="🐟 민물 어종">
                 <option value="붕어">붕어 (45cm)</option><option value="배스">배스 (60cm)</option>
-                <option value="쏘가리">쏘가리 (55cm)</option><option value="잉어">잉어 (90cm)</option>
-                <option value="가물치">가물치 (90cm)</option><option value="메기">메기 (80cm)</option>
-                <option value="꺽지">꺽지 (28cm)</option>
+                <option value="참돔">참돔 (95cm)</option><option value="감성돔">감성돔 (60cm)</option>
+                <option value="가물치">가물치 (90cm)</option><option value="쏘가리">쏘가리 (55cm)</option>
             </optgroup>
         </select>
         <input type="text" id="fisherName" placeholder="조사님 성함 입력">
         <button class="btn btn-calc" onclick="showRank()">⚖️ 서열 확인하기</button>
     </div>
 
-    <div id="result-card">
-        <div id="res-rank" style="font-size:36px; font-weight:900; color:#fee500;"></div>
-        <div id="res-size" style="font-size:22px; margin:10px 0; color:#fff;"></div>
-        <p id="res-msg" style="color:#94a3b8; font-size:14px; line-height:1.5;"></p>
+    <div id="result-card" style="display:none; background:#000; padding:20px; border-radius:15px; border:4px solid #fee500; margin-bottom:20px;">
+        <div id="res-rank" style="font-size:32px; font-weight:900; color:#fee500;"></div>
+        <div id="res-size" style="font-size:20px; margin:10px 0;"></div>
     </div>
 
     <div class="revenue-box">
-        <p style="font-size:13px; margin-bottom:12px; color:#94a3b8;">오늘 대물을 낚으셨나요? 찬둥이에게 응원의 커피 한 잔!</p>
-        <a href="https://qr.kakaopay.com/FRK8J0SAD" class="kakao-pay" target="_blank">💛 카카오페이로 팁 쏘기 (송금)</a>
+        <p style="font-size:13px; margin-bottom:12px; color:#94a3b8;">오늘 대물 낚으셨나요? 찬둥이 커피 한 잔!</p>
+        <a href="https://qr.kakaopay.com/FRK8J0SAD" class="kakao-pay" target="_blank">💛 카카오페이 송금하기</a>
 
-        <p style="font-size:12px; margin: 10px 0 10px; color:#94a3b8;">부족한 낚시 장비는 여기서 최저가 검색!</p>
-        <a href="https://link.coupang.com/a/AF4757238" class="coupang-search-bar" target="_blank">
-            <span>낚시용품 최저가 검색...</span>
-            <div class="search-btn">검색</div>
-        </a>
+        <p style="font-size:13px; margin-bottom:10px; color:#94a3b8;">🎣 부족한 낚시 장비 검색</p>
+        <div class="coupang-widget-wrap">
+            <iframe src="https://ads-partners.coupang.com/widgets.html?id=570624&template=carousel&trackingCode=AF4757238&subId=&width=300&height=300" width="300" height="300" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+        </div>
+        
         <p style="font-size:10px; margin-top:15px; opacity:0.6; line-height:1.4;">이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>이에 따른 일정액의 수수료를 제공받습니다.</p>
     </div>
 </div>
 
 <script>
-    const STANDARDS = {"광어": 85, "우럭": 55, "참돔": 95, "감성돔": 60, "벵에돔": 55, "돌돔": 70, "농어": 105, "방어": 110, "부시리": 140, "무늬오징어": 45, "붕어": 45, "배스": 60, "쏘가리": 55, "잉어": 90, "가물치": 90, "메기": 80, "꺽지": 28};
+    const STANDARDS = {"광어": 85, "우럭": 55, "참돔": 95, "감성돔": 60, "붕어": 45, "배스": 60, "가물치": 90, "쏘가리": 55};
     const canvas = document.getElementById('mainCanvas');
     const ctx = canvas.getContext('2d');
     const mag = document.getElementById('magnifier');
@@ -127,8 +109,8 @@
                 originalImg = img;
                 canvas.width = img.width; canvas.height = img.height;
                 magCanvas.width = 200; magCanvas.height = 200;
-                points = []; step = 1; cardPx = 0;
-                liveStatus.innerHTML = "💳 [카드 터치] 돋보기를 보고 <b style='color:#fee500'>카드 양 끝</b>을 누르세요!";
+                points = []; step = 1;
+                liveStatus.innerHTML = "💳 [카드 터치] 돋보기 조준선에 맞춰 양 끝을 누르세요!";
                 draw();
             }
             img.src = evt.target.result;
@@ -157,7 +139,7 @@
             if (step === 1 && points.length === 2) {
                 cardPx = Math.sqrt(Math.pow(points[0].x - points[1].x, 2) + Math.pow(points[0].y - points[1].y, 2));
                 step = 2;
-                liveStatus.innerHTML = "🐟 [고기 터치] 돋보기를 보고 <b style='color:#0ea5e9'>물고기 머리/꼬리 끝</b>을 누르세요!";
+                liveStatus.innerHTML = "🐟 [고기 터치] 물고기 머리와 꼬리를 누르세요!";
             } else if (step === 2 && points.length === 4) {
                 const fishPx = Math.sqrt(Math.pow(points[2].x - points[3].x, 2) + Math.pow(points[2].y - points[3].y, 2));
                 window.finalCm = ((fishPx / cardPx) * 8.56).toFixed(1);
@@ -189,18 +171,11 @@
     }
 
     function showRank() {
-        if(!window.finalCm) return alert("카드와 고기를 먼저 터치해주세요!");
-        const type = document.getElementById('fishType').value;
-        const name = document.getElementById('fisherName').value || "조사";
-        const score = (window.finalCm / (STANDARDS[type] || 50)) * 100;
-        let rank, msg;
-        if (score >= 95) { rank = "전설의 조사"; msg = "용왕님이 형님 소리 하겠는데요? 대박입니다!"; }
-        else if (score >= 80) { rank = "용왕의 아들"; msg = "어디 가서 낚시 좀 한다고 어깨 펴세요!"; }
-        else { rank = "도시 어부"; msg = "손맛 좀 보셨네요! 축하드립니다."; }
-        document.getElementById('res-rank').innerText = rank;
-        document.getElementById('res-size').innerText = `${type} / ${window.finalCm}cm`;
-        document.getElementById('res-msg').innerText = `"${name}님, ${msg}"`;
-        document.getElementById('result-card').style.display = "block";
+        if(!window.finalCm) return alert("측정을 먼저 해주세요!");
+        const rBox = document.getElementById('result-card');
+        document.getElementById('res-rank').innerText = window.finalCm > 40 ? "용왕의 아들" : "도시 어부";
+        document.getElementById('res-size').innerText = window.finalCm + "cm 기록!";
+        rBox.style.display = "block";
         window.scrollTo(0, document.body.scrollHeight);
     }
 </script>
