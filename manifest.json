@@ -1,0 +1,16 @@
+{
+  "name": "어신의 도구 - 피싱 랭크",
+  "short_name": "어신의도구",
+  "description": "카드 한 장으로 측정하는 전국 낚시 서열",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#fee500",
+  "icons": [
+    {
+      "src": "https://postfiles.pstatic.net/MjAyMzExMTN_MTg2/Mda40_T8J1y508b_H8_0vM4N84_A_R84_A_R8_A_A/img.png?type=w773",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
