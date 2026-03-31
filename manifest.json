@@ -8,9 +8,10 @@
   "theme_color": "#fee500",
 "icons": [
   {
-    "src": "https://imagizer.imageshack.com/img923/6334/E4o9pS.png?v=1", 
+    "src": "https://imagizer.imageshack.com/img923/8408/PZ8Gnd.png?v=2", 
     "sizes": "512x512",
-    "type": "image/png"
+    "type": "image/png",
+    "purpose": "any maskable" 
   }
 ]
 }
