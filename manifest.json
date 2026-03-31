@@ -6,11 +6,11 @@
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#fee500",
-  "icons": [
-    {
-      "src": "https://imagizer.imageshack.com/img923/6334/E4o9pS.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+"icons": [
+  {
+    "src": "https://imagizer.imageshack.com/img923/6334/E4o9pS.png?v=1", 
+    "sizes": "512x512",
+    "type": "image/png"
+  }
+]
 }
